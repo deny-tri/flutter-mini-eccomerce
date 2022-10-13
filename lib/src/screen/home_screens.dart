@@ -159,7 +159,7 @@ class HomeScreens extends StatelessWidget {
                         MaterialPageRoute(
                             builder: (context) => const ProductScreens()));
                   },
-                  child: const Text("Product"),
+                  child: const Text("Pro"),
                 ),
               ),
               Center(
