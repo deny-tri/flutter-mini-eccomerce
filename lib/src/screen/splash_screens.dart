@@ -22,8 +22,8 @@ class _SplashScreenState extends State<SplashScreen> {
   Future<void> checkLogin() async {
     final SharedPreferences storage = await _prefs;
     if (storage.getBool('Login') == true) {
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => HomeScreens()));
+      Navigator.pushReplacement(context,
+          MaterialPageRoute(builder: (context) => const HomeScreens()));
     } else {
       Navigator.pushReplacement(context,
           MaterialPageRoute(builder: (context) => const LoginScreens()));
