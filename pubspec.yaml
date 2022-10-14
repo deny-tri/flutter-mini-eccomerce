@@ -39,6 +39,7 @@ dependencies:
   font_awesome_flutter: ^10.2.1
   new_gradient_app_bar: ^0.2.0
   flutter_local_notifications: ^12.0.2
+  slide_countdown: ^0.3.4
 
 dev_dependencies:
   flutter_test:
