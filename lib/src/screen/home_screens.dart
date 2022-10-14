@@ -1,7 +1,46 @@
 part of 'screens.dart';
 
-class HomeScreens extends StatelessWidget {
+class HomeScreens extends StatefulWidget {
   const HomeScreens({super.key});
+
+  @override
+  State<HomeScreens> createState() => _HomeScreensState();
+}
+
+class _HomeScreensState extends State<HomeScreens> {
+  final Future<SharedPreferences> prefs = SharedPreferences.getInstance();
+  NotificationService notificationService = NotificationService();
+
+  Future<dynamic> onReceiveNotif(int id, String? title, String? body) async {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(title!),
+          content: Text(body!),
+          actions: [
+            TextButton(
+              onPressed: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Kamu Mendapatkan $body')));
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void showNotif() {
+    notificationService.showNotif("test aja");
+  }
+
+  @override
+  void initState() {
+    notificationService.init((p0, p1, p2, p3) => onReceiveNotif(p0, p1, p3));
+    super.initState();
+  }
 
   Widget _buildSearch(Size size) {
     return Padding(
@@ -172,7 +211,13 @@ class HomeScreens extends StatelessWidget {
                   },
                   child: const Text("Profile"),
                 ),
-              )
+              ),
+              Center(
+                child: TextButton(
+                  onPressed: showNotif,
+                  child: const Text("Notification"),
+                ),
+              ),
             ],
           ),
         ),
