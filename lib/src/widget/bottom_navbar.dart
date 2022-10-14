@@ -14,7 +14,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
   _buildSwitchOnTap(int pos) {
     switch (pos) {
       case 0:
-        return const HomeScreens();
+        return HomeScreens();
       case 1:
         return const ProductScreens();
       case 2:

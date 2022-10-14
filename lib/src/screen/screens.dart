@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:new_gradient_app_bar/new_gradient_app_bar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../service/services.dart';
 import '../widget/widgets.dart';
 import '../utilities/utilities.dart';
 
