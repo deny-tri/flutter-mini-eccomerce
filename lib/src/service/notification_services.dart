@@ -7,6 +7,7 @@ class NotificationService {
   void init(
       Future<dynamic> Function(int, String?, String?, String?)? onDidReceive) {
     //Android notification
+
     late AndroidInitializationSettings androidSettings =
         const AndroidInitializationSettings(appIcon);
     //IOS notification

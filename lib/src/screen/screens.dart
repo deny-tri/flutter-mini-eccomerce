@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:http/http.dart' as http;
 import 'package:belajar_clean/src/model/models.dart';
 import 'package:flutter/material.dart';
