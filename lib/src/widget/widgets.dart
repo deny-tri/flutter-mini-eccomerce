@@ -8,4 +8,3 @@ part 'button_widgets.dart';
 part 'product_widgets.dart';
 part 'dialog_widgets.dart';
 part 'detail_product_widgets.dart';
-part 'bottom_navbar.dart';
