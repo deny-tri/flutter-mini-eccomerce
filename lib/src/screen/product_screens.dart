@@ -1,89 +1,89 @@
 part of 'screens.dart';
 
-class ProductScreens extends StatefulWidget {
+class ProductScreens extends StatelessWidget {
   const ProductScreens({super.key});
-
-  @override
-  State<ProductScreens> createState() => _ProductScreensState();
-}
-
-class _ProductScreensState extends State<ProductScreens> {
-  bool _searchApp = false;
-
-  @override
-  void initState() {
-    BlocProvider.of<ProductBloc>(context).add(FetchProductFromAPI());
-    super.initState();
-  }
 
   Widget _buildTextField() {
     return const TextField(
       autofocus: true,
-      cursorColor: Colors.white,
-      style: TextStyle(color: Colors.white),
+      cursorColor: Colors.black,
+      style: TextStyle(color: Colors.black),
       textInputAction: TextInputAction.search,
       decoration: InputDecoration(
         hintText: "Search",
-        hintStyle: TextStyle(color: Colors.white54, fontSize: 20),
+        hintStyle: TextStyle(color: Colors.black, fontSize: 20),
         enabledBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: Colors.white),
+          borderSide: BorderSide(color: Colors.black),
         ),
         focusedBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: Colors.white),
+          borderSide: BorderSide(color: Colors.black),
         ),
       ),
     );
   }
 
-  _buildAppbar() {
-    return AppBar(
-      backgroundColor: Colors.transparent,
-      elevation: 1,
-      leading: IconButton(
-        onPressed: () {
-          Navigator.pop(context);
-        },
-        icon: const Icon(Icons.arrow_back_ios_new),
+  Widget _buildSearch(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(Icons.arrow_back_ios_new, color: Colors.black),
+          ),
+          Container(
+            width: size.width * 0.7,
+            // height: 50,
+            decoration: BoxDecoration(
+              color: Colors.black.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: const TextField(
+              // onChanged: (value) {
+
+              // },
+              decoration: InputDecoration(
+                enabledBorder: InputBorder.none,
+                focusedBorder: InputBorder.none,
+                hintText: "Search",
+                prefixIcon: Icon(Icons.search),
+                contentPadding: EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 20,
+                ),
+              ),
+            ),
+          ),
+          InkWell(
+            onTap: () {},
+            borderRadius: BorderRadius.circular(50),
+            child: Stack(
+              children: [
+                Container(
+                  height: size.height * 0.1,
+                  width: size.width * 0.1,
+                  decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(0.1),
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(Icons.filter_alt_outlined),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
-      // gradient: appGradient(),
-      title: !_searchApp
-          ? const Text(
-              "Product",
-              style: TextStyle(
-                  fontWeight: FontWeight.bold, fontStyle: FontStyle.italic),
-            )
-          : _buildTextField(),
-      actions: !_searchApp
-          ? [
-              IconButton(
-                icon: const Icon(Icons.search),
-                onPressed: () {
-                  setState(() {
-                    _searchApp = true;
-                  });
-                },
-              ),
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.shopping_cart_outlined),
-              ),
-            ]
-          : [
-              IconButton(
-                icon: const Icon(Icons.clear),
-                onPressed: () {
-                  setState(() {
-                    _searchApp = false;
-                  });
-                },
-              ),
-            ],
     );
   }
 
   Widget _buildGridView(Size size) {
     final double conHeight = (size.height / 2 - kToolbarHeight);
     final double conWidth = size.width / 2;
+
     return BlocConsumer<ProductBloc, ProductState>(
       listener: (context, state) {
         if (state is ProductIsFailed) {
@@ -117,14 +117,23 @@ class _ProductScreensState extends State<ProductScreens> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    BlocProvider.of<ProductBloc>(context).add(FetchProductFromAPI());
     return RefreshIndicator(
       onRefresh: () async {
         BlocProvider.of<ProductBloc>(context).add(FetchProductFromAPI());
       },
       child: SafeArea(
         child: Scaffold(
-          appBar: _buildAppbar(),
-          body: _buildGridView(size),
+          body: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                _buildSearch(context),
+                Center(child: _buildGridView(size)),
+              ],
+            ),
+          ),
+          // body: _buildGridView(size),
         ),
       ),
     );

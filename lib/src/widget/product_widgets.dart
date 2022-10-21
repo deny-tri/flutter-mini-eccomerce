@@ -15,14 +15,12 @@ class ProductWidget extends StatelessWidget {
     return Scaffold(
       body: GestureDetector(
         onTap: () {
+          BlocProvider.of<ProductDetailBloc>(context)
+              .add(FetchDetailProduct(products.id!));
           Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const DetailProductScreen()))
-              .then((value) {
-            BlocProvider.of<ProductDetailBloc>(context)
-                .add(FetchDetailProduct(products.id!));
-          });
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const DetailProductScreen()));
         },
         child: Stack(
           children: [

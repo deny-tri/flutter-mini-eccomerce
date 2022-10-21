@@ -18,7 +18,6 @@ class _HomeScreensState extends State<HomeScreens> {
 
   @override
   void initState() {
-    BlocProvider.of<CategoryProductBloc>(context).add(FetchCategoryProduct());
     notificationService.init((p0, p1, p2, p3) => onReceiveNotif(p0, p1, p3),
         onDidReceiveNotificationResponse);
     super.initState();
@@ -210,6 +209,23 @@ class _HomeScreensState extends State<HomeScreens> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
+                            builder: (context) => const ProfileScreens()));
+                  },
+                  icon: const Icon(
+                    Icons.person,
+                    color: Colors.blue,
+                  ),
+                ),
+                const Text("Profile"),
+              ],
+            ),
+            Column(
+              children: [
+                IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
                             builder: (context) => const ProductScreens()));
                   },
                   icon: const Icon(
@@ -232,24 +248,7 @@ class _HomeScreensState extends State<HomeScreens> {
                     color: Colors.tealAccent,
                   ),
                 ),
-                const Text("Theme Color"),
-              ],
-            ),
-            Column(
-              children: [
-                IconButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const ProfileScreens()));
-                  },
-                  icon: const Icon(
-                    Icons.person,
-                    color: Colors.blue,
-                  ),
-                ),
-                const Text("Profile"),
+                const Text("Dark Theme"),
               ],
             ),
           ],
@@ -265,6 +264,7 @@ class _HomeScreensState extends State<HomeScreens> {
   }
 
   Widget _buildCategory(Size size) {
+    BlocProvider.of<CategoryProductBloc>(context).add(FetchCategoryProduct());
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -344,6 +344,7 @@ class _HomeScreensState extends State<HomeScreens> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+
     return RefreshIndicator(
       onRefresh: () async {
         BlocProvider.of<ProductBloc>(context).add(FetchProductFromAPI());

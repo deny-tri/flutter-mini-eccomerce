@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_mini_eccommerce/src/blocs/category_product/category_product_bloc.dart';
-import 'package:flutter_mini_eccommerce/src/cubit/dark_theme/dark_theme_cubit.dart';
-
-import 'blocs/blocs.dart';
-import 'screen/screens.dart';
+import 'package:flutter_mini_eccommerce/src/blocs/blocs.dart';
+import 'package:flutter_mini_eccommerce/src/cubit/cubits.dart';
+import 'package:flutter_mini_eccommerce/src/screen/screens.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -25,6 +23,12 @@ class App extends StatelessWidget {
         BlocProvider(
           create: (context) => DarkThemeCubit(),
         ),
+        BlocProvider(
+          create: (context) => CheckLoginCubit(),
+        ),
+        BlocProvider(
+          create: (context) => ChangeColorProductCubit(),
+        ),
       ],
       child: BlocBuilder<DarkThemeCubit, ThemeData>(
         builder: (context, state) {
@@ -35,11 +39,6 @@ class App extends StatelessWidget {
           );
         },
       ),
-      // child: const MaterialApp(
-      //   title: 'Flutter',
-      //   debugShowCheckedModeBanner: false,
-      //   home: SplashScreen(),
-      // ),
     );
   }
 }

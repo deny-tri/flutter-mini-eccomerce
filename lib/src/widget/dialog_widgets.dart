@@ -1,23 +1,24 @@
 part of 'widgets.dart';
 
 class DialogWidgets extends StatelessWidget {
-  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  const DialogWidgets({super.key});
 
-  DialogWidgets({super.key});
   showAlertDialog(BuildContext context) {
-    Widget okButton = TextButton(
-      onPressed: () async {
-        SharedPreferences storage = await _prefs;
-        if (storage.getBool('Login') == true) {
-          storage.clear().then(
-                (value) => Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const LoginScreens())),
-              );
+    Widget okButton = BlocListener<CheckLoginCubit, CheckLoginState>(
+      listener: (context, state) {
+        if (state is CheckLoginIsLogOut) {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(const SnackBar(content: Text("Berhasil Log Out")));
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => const LoginScreens()));
         }
       },
-      child: const Text('Ya'),
+      child: TextButton(
+        onPressed: () {
+          BlocProvider.of<CheckLoginCubit>(context).logout();
+        },
+        child: const Text('Ya'),
+      ),
     );
     Widget cancelButton = TextButton(
       onPressed: () => Navigator.pop(context, 'Tidak'),

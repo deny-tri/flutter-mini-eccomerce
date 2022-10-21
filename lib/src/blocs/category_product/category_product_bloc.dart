@@ -1,7 +1,7 @@
-import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_mini_eccommerce/src/model/models.dart';
 import 'package:flutter_mini_eccommerce/src/service/services.dart';
-import 'package:meta/meta.dart';
 
 part 'category_product_event.dart';
 part 'category_product_state.dart';

@@ -5,6 +5,12 @@ abstract class ProductState {}
 
 class ProductInitial extends ProductState {}
 
+class ProductIsAppBar extends ProductState {
+  final bool index;
+
+  ProductIsAppBar(this.index);
+}
+
 class ProductIsLoading extends ProductState {}
 
 class ProductIsSuccesess extends ProductState {

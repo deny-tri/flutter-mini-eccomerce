@@ -18,13 +18,6 @@ class _DetailProductWidgetState extends State<DetailProductWidget> {
     Colors.red
   ];
 
-  int selectedIndex = 0;
-  void changeColor(int newIndex) {
-    setState(() {
-      selectedIndex = newIndex;
-    });
-  }
-
   _sizedBox(double val) {
     return SizedBox(height: val);
   }
@@ -45,6 +38,17 @@ class _DetailProductWidgetState extends State<DetailProductWidget> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildModalWidget() {
+    return Column(
+      children: [
+        const Text("data"),
+        _sizedBox(10),
+        ElevatedButton(
+            onPressed: () {}, child: const Text("Masukkan Keranjang"))
+      ],
     );
   }
 
@@ -157,31 +161,38 @@ class _DetailProductWidgetState extends State<DetailProductWidget> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  children: colors.map((e) {
-                    int index = colors.indexOf(e);
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: GestureDetector(
-                        onTap: () {
-                          changeColor(index);
-                        },
-                        child: AnimatedContainer(
-                          decoration:
-                              BoxDecoration(color: e, shape: BoxShape.circle),
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.fastOutSlowIn,
-                          width:
-                              (index == selectedIndex) ? 30.0 : 20.0.toDouble(),
-                          height:
-                              (index == selectedIndex) ? 30.0 : 20.0.toDouble(),
-                        ),
-                      ),
-                    );
-                  }).toList(),
-                ),
+              BlocBuilder<ChangeColorProductCubit, ChangeColorProductState>(
+                builder: (context, state) {
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: colors.map((e) {
+                        int index = colors.indexOf(e);
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: GestureDetector(
+                            onTap: () {
+                              BlocProvider.of<ChangeColorProductCubit>(context)
+                                  .changeColor(index);
+                            },
+                            child: AnimatedContainer(
+                              decoration: BoxDecoration(
+                                  color: e, shape: BoxShape.circle),
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.fastOutSlowIn,
+                              width: (index ==
+                                      (state as ChangeColorProductIsColor)
+                                          .index)
+                                  ? 30
+                                  : 20,
+                              height: (index == (state.index) ? 30 : 20),
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  );
+                },
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -225,7 +236,10 @@ class _DetailProductWidgetState extends State<DetailProductWidget> {
                 side: const BorderSide(color: Colors.deepOrange),
               ),
             ),
-            onPressed: () {},
+            onPressed: () {
+              showModalBottomSheet(
+                  context: context, builder: (context) => _buildModalWidget());
+            },
             child: const Text("Add to Chart"),
           ),
         ],
