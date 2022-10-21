@@ -67,10 +67,17 @@ class ProductWidget extends StatelessWidget {
                               Text(
                                 products.title!,
                                 style: const TextStyle(
-                                    fontSize: 12, fontWeight: FontWeight.bold),
+                                    color: Colors.black,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold),
                               ),
                               _sizedBox(10),
-                              Text("US.${products.price!}"),
+                              Text(
+                                "US.${products.price!}",
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                ),
+                              ),
                             ],
                           ),
                         ],
@@ -82,7 +89,12 @@ class ProductWidget extends StatelessWidget {
                             Icons.shopping_cart,
                             color: Colors.orange,
                           ),
-                          Text(products.category!),
+                          Text(
+                            products.category!,
+                            style: const TextStyle(
+                              color: Colors.black,
+                            ),
+                          ),
                         ],
                       ),
                     ],
