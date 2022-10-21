@@ -12,13 +12,24 @@ class _HomeScreensState extends State<HomeScreens> {
   NotificationService notificationService = NotificationService();
 
   void showNotif() {
-    notificationService.showNotif("test aja");
+    notificationService.showNotifBirthday('Ada Promo nich buat kamu',
+        'Mens Casual Slim Fit yang kamu inginkan turun harga 70%', '3');
   }
 
   @override
   void initState() {
-    notificationService.init((p0, p1, p2, p3) => onReceiveNotif(p0, p1, p3));
+    BlocProvider.of<CategoryProductBloc>(context).add(FetchCategoryProduct());
+    notificationService.init((p0, p1, p2, p3) => onReceiveNotif(p0, p1, p3),
+        onDidReceiveNotificationResponse);
     super.initState();
+  }
+
+  void onDidReceiveNotificationResponse(
+      NotificationResponse notificationResponse) async {
+    final String? payload = notificationResponse.payload;
+    if (notificationResponse.payload != null) {
+      debugPrint('notification payload: $payload');
+    }
   }
 
   Future<dynamic> onReceiveNotif(int id, String? title, String? body) async {
@@ -112,7 +123,10 @@ class _HomeScreensState extends State<HomeScreens> {
             ),
           ),
           InkWell(
-            onTap: showNotif,
+            onTap: () {
+              notificationService.showNotifBirthday(
+                  'Promo Bulan Oktober', 'Promo guys', '3');
+            },
             borderRadius: BorderRadius.circular(50),
             child: Stack(
               children: [
@@ -229,55 +243,82 @@ class _HomeScreensState extends State<HomeScreens> {
     );
   }
 
+  Widget _buildCountdown() {
+    return const SlideCountdownSeparated(
+      duration: Duration(days: 31),
+    );
+  }
+
   Widget _buildCategory(Size size) {
-    return SizedBox(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            "Category",
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text("Mens Clothing"),
-                  const SlideCountdownSeparated(
-                    duration: Duration(days: 31),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const ProfileScreens()));
-                    },
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Text("Views"),
-                        const Icon(
-                          Icons.arrow_forward_ios,
-                          size: 14,
-                        ),
-                      ],
-                    ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          "Promo",
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        _sizedBox(10),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text("Cash Back"),
+            _buildCountdown(),
+            TextButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const ProductScreens()));
+              },
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: const [
+                  Text("Views"),
+                  Icon(
+                    Icons.arrow_forward_ios,
+                    size: 14,
                   ),
                 ],
               ),
-              Container(
-                height: size.height * 0.15,
-                width: size.width,
-                color: Colors.amber,
-                child: const Text("TODO listview vertical"),
+            ),
+          ],
+        ),
+        Row(
+          children: [
+            Expanded(
+              child: SizedBox(
+                height: 200,
+                child: BlocConsumer<CategoryProductBloc, CategoryProductState>(
+                  listener: (context, state) {
+                    if (state is CategoryProductIsFailed) {
+                      ScaffoldMessenger.of(context)
+                          .showSnackBar(SnackBar(content: Text(state.message)));
+                    }
+                  },
+                  builder: (context, state) {
+                    if (state is CategoryProductIsLoading) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                    if (state is CategoryProductIsSuccess) {
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
+                        itemCount: state.data.length,
+                        itemBuilder: (context, index) =>
+                            CategoryWidget(categories: state.data[index]),
+                      );
+                    }
+
+                    return const SizedBox();
+                  },
+                ),
               ),
-            ],
-          ),
-        ],
-      ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 
@@ -288,22 +329,27 @@ class _HomeScreensState extends State<HomeScreens> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _buildSearch(size),
-                _sizedBox(10),
-                _buildProduct(size),
-                _sizedBox(12),
-                _buildIconbutton(),
-                _sizedBox(10),
-                _buildCategory(size),
-              ],
+    return RefreshIndicator(
+      onRefresh: () async {
+        BlocProvider.of<ProductBloc>(context).add(FetchProductFromAPI());
+      },
+      child: SafeArea(
+        child: Scaffold(
+          body: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildSearch(size),
+                  _sizedBox(10),
+                  _buildProduct(size),
+                  _sizedBox(12),
+                  _buildIconbutton(),
+                  _sizedBox(10),
+                  _buildCategory(size),
+                ],
+              ),
             ),
           ),
         ),

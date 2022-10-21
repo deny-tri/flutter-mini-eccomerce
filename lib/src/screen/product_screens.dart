@@ -10,6 +10,12 @@ class ProductScreens extends StatefulWidget {
 class _ProductScreensState extends State<ProductScreens> {
   bool _searchApp = false;
 
+  @override
+  void initState() {
+    BlocProvider.of<ProductBloc>(context).add(FetchProductFromAPI());
+    super.initState();
+  }
+
   Widget _buildTextField() {
     return const TextField(
       autofocus: true,
@@ -76,43 +82,50 @@ class _ProductScreensState extends State<ProductScreens> {
   }
 
   Widget _buildGridView(Size size) {
-    final double itemHeight = (size.height / 2 - kToolbarHeight);
-    final double itemWidth = size.width / 2;
-    return FutureBuilder<http.Response>(
-        future: http.get(Uri.parse("https://fakestoreapi.com/products")),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          if (snapshot.hasData) {
-            final products = productModelFromJson(snapshot.data!.body);
-            return GridView.count(
-              crossAxisCount: 2,
-              childAspectRatio: (itemWidth / itemHeight),
-              controller: ScrollController(keepScrollOffset: false),
-              shrinkWrap: true,
-              scrollDirection: Axis.vertical,
-              children: products
-                  .map((e) => ProductWidget(
-                        products: e,
-                      ))
-                  .toList(),
-            );
-          }
-          if (snapshot.hasError) {}
-          return const SizedBox();
-        });
+    final double conHeight = (size.height / 2 - kToolbarHeight);
+    final double conWidth = size.width / 2;
+    return BlocConsumer<ProductBloc, ProductState>(
+      listener: (context, state) {
+        if (state is ProductIsFailed) {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text(state.message)));
+        }
+      },
+      builder: (context, state) {
+        if (state is ProductIsLoading) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        if (state is ProductIsSuccesess) {
+          return GridView.count(
+            crossAxisCount: 2,
+            childAspectRatio: (conWidth / conHeight),
+            controller: ScrollController(keepScrollOffset: false),
+            shrinkWrap: true,
+            scrollDirection: Axis.vertical,
+            children:
+                state.data.map((e) => ProductWidget(products: e)).toList(),
+          );
+        }
+
+        return const SizedBox();
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Scaffold(
-      appBar: _buildAppbar(),
-      body: SafeArea(
-        child: _buildGridView(size),
+    return RefreshIndicator(
+      onRefresh: () async {
+        BlocProvider.of<ProductBloc>(context).add(FetchProductFromAPI());
+      },
+      child: SafeArea(
+        child: Scaffold(
+          appBar: _buildAppbar(),
+          body: _buildGridView(size),
+        ),
       ),
     );
   }
