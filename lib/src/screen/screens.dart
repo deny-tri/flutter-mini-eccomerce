@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_mini_eccommerce/src/blocs/blocs.dart';
 import 'package:flutter_mini_eccommerce/src/blocs/category_product/category_product_bloc.dart';
-import 'package:flutter_mini_eccommerce/src/cubit/dark_theme/dark_theme_cubit.dart';
+import 'package:flutter_mini_eccommerce/src/cubit/cubits.dart';
 import 'package:flutter_mini_eccommerce/src/service/services.dart';
 import 'package:flutter_mini_eccommerce/src/utilities/utilities.dart';
 import 'package:flutter_mini_eccommerce/src/widget/widgets.dart';

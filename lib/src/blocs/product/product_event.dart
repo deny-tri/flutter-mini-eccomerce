@@ -4,3 +4,10 @@ part of 'product_bloc.dart';
 abstract class ProductEvent {}
 
 class FetchProductFromAPI extends ProductEvent {}
+
+class SwitchToLogin extends ProductEvent {
+  @override
+  String toString() {
+    return "Switch to Login";
+  }
+}
