@@ -224,6 +224,21 @@ class _HomeScreensState extends State<HomeScreens> {
               children: [
                 IconButton(
                   onPressed: () {
+                    final cubit = context.read<ChangeColorCubit>();
+                    cubit.changeColor();
+                  },
+                  icon: const Icon(
+                    Icons.dark_mode,
+                    color: Colors.tealAccent,
+                  ),
+                ),
+                const Text("Theme Color"),
+              ],
+            ),
+            Column(
+              children: [
+                IconButton(
+                  onPressed: () {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
