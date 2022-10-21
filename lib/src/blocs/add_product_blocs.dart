@@ -1,4 +1,4 @@
-part of 'blocs.dart';
+import 'dart:async';
 
 class AddProduct {
   int _counterAdd = 0;

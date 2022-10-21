@@ -16,10 +16,13 @@ class ProductWidget extends StatelessWidget {
       body: GestureDetector(
         onTap: () {
           Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      DetailProductScreen(productId: products.id!)));
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const DetailProductScreen()))
+              .then((value) {
+            BlocProvider.of<ProductDetailBloc>(context)
+                .add(FetchDetailProduct(products.id!));
+          });
         },
         child: Stack(
           children: [
