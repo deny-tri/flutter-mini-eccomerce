@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_mini_eccommerce/src/blocs/category_product/category_product_bloc.dart';
-import 'package:flutter_mini_eccommerce/src/cubit/change_color_cubit.dart';
+import 'package:flutter_mini_eccommerce/src/cubit/dark_theme/dark_theme_cubit.dart';
 
 import 'blocs/blocs.dart';
 import 'screen/screens.dart';
@@ -23,10 +23,10 @@ class App extends StatelessWidget {
           create: (context) => CategoryProductBloc(),
         ),
         BlocProvider(
-          create: (context) => ChangeColorCubit(),
+          create: (context) => DarkThemeCubit(),
         ),
       ],
-      child: BlocBuilder<ChangeColorCubit, ThemeData>(
+      child: BlocBuilder<DarkThemeCubit, ThemeData>(
         builder: (context, state) {
           return MaterialApp(
             theme: state,

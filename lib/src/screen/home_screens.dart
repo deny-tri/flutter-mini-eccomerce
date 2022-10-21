@@ -224,8 +224,8 @@ class _HomeScreensState extends State<HomeScreens> {
               children: [
                 IconButton(
                   onPressed: () {
-                    final cubit = context.read<ChangeColorCubit>();
-                    cubit.changeColor();
+                    final cubit = context.read<DarkThemeCubit>();
+                    cubit.darkTheme();
                   },
                   icon: const Icon(
                     Icons.dark_mode,
