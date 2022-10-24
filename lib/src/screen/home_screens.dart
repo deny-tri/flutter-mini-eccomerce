@@ -2,7 +2,6 @@ part of 'screens.dart';
 
 class HomeScreens extends StatefulWidget {
   const HomeScreens({super.key});
-
   @override
   State<HomeScreens> createState() => _HomeScreensState();
 }
@@ -344,7 +343,6 @@ class _HomeScreensState extends State<HomeScreens> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-
     return RefreshIndicator(
       onRefresh: () async {
         BlocProvider.of<ProductBloc>(context).add(FetchProductFromAPI());
@@ -368,6 +366,7 @@ class _HomeScreensState extends State<HomeScreens> {
               ),
             ),
           ),
+          extendBody: true,
         ),
       ),
     );
