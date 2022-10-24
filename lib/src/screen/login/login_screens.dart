@@ -176,7 +176,7 @@ class _LoginScreensState extends State<LoginScreens>
                       Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const HomeScreens()));
+                              builder: (context) => const BottombarWidget()));
                       setState(() {});
                       isLoginProcessing = false;
                     } else {

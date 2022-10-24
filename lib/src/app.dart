@@ -29,6 +29,9 @@ class App extends StatelessWidget {
         BlocProvider(
           create: (context) => ChangeColorProductCubit(),
         ),
+        BlocProvider(
+          create: (context) => ChangeBottomnavbarCubit(context),
+        ),
       ],
       child: BlocBuilder<DarkThemeCubit, ThemeData>(
         builder: (context, state) {

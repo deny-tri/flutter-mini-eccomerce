@@ -12,8 +12,10 @@ class SplashScreen extends StatelessWidget {
       child: BlocConsumer<CheckLoginCubit, CheckLoginState>(
         listener: (context, state) {
           if (state is CheckLoginIsSuccess) {
-            Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) => const HomeScreens()));
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const BottombarWidget()));
           } else if (state is CheckLoginIsFailed) {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => const LoginScreens()));
