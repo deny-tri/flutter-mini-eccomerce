@@ -3,25 +3,6 @@ part of 'screens.dart';
 class ProductScreens extends StatelessWidget {
   const ProductScreens({super.key});
 
-  Widget _buildTextField() {
-    return const TextField(
-      autofocus: true,
-      cursorColor: Colors.black,
-      style: TextStyle(color: Colors.black),
-      textInputAction: TextInputAction.search,
-      decoration: InputDecoration(
-        hintText: "Search",
-        hintStyle: TextStyle(color: Colors.black, fontSize: 20),
-        enabledBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: Colors.black),
-        ),
-        focusedBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: Colors.black),
-        ),
-      ),
-    );
-  }
-
   Widget _buildSearch(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Padding(
@@ -33,7 +14,7 @@ class ProductScreens extends StatelessWidget {
             onPressed: () {
               Navigator.pop(context);
             },
-            icon: const Icon(Icons.arrow_back_ios_new, color: Colors.black),
+            icon: const Icon(Icons.arrow_back_ios_new),
           ),
           Container(
             width: size.width * 0.7,
