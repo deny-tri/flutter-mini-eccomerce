@@ -117,9 +117,9 @@ class ProfileScreens extends StatelessWidget {
                 ],
               ),
               Column(
-                children: [
-                  const DialogWidgets(),
-                  const Text(
+                children: const [
+                  DialogWidgets(),
+                  Text(
                     "Log Out",
                     style: TextStyle(color: Colors.white),
                   ),

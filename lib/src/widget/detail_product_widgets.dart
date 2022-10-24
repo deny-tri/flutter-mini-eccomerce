@@ -44,7 +44,7 @@ class _DetailProductWidgetState extends State<DetailProductWidget> {
   Widget _buildModalWidget() {
     return Column(
       children: [
-        const Text("data"),
+        const Text("Pemesanan"),
         _sizedBox(10),
         ElevatedButton(
             onPressed: () {}, child: const Text("Masukkan Keranjang"))

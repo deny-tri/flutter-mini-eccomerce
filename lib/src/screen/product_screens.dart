@@ -74,15 +74,22 @@ class ProductScreens extends StatelessWidget {
       },
       builder: (context, state) {
         if (state is ProductIsLoading) {
-          return const Center(
-            child: CircularProgressIndicator(),
+          return SizedBox(
+            height: size.height / 1.3,
+            child: const Center(
+              child: SizedBox(
+                width: 20,
+                height: 20,
+                child: CircularProgressIndicator(),
+              ),
+            ),
           );
         }
         if (state is ProductIsSuccesess) {
           return GridView.count(
             crossAxisCount: 2,
             childAspectRatio: (conWidth / conHeight),
-            controller: ScrollController(keepScrollOffset: false),
+            controller: ScrollController(keepScrollOffset: true),
             shrinkWrap: true,
             scrollDirection: Axis.vertical,
             children:
@@ -106,13 +113,10 @@ class ProductScreens extends StatelessWidget {
       child: SafeArea(
         child: Scaffold(
           body: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                _buildSearch(context),
-                Center(child: _buildGridView(size)),
-              ],
-            ),
+            child: Column(children: [
+              _buildSearch(context),
+              _buildGridView(size),
+            ]),
           ),
           // body: _buildGridView(size),
         ),
